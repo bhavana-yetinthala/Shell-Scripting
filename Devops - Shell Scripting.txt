@@ -1,0 +1,285 @@
+Interview Question:
+
+Shell Scripting - Part 1
+
+- What is the difference between /bin/sh and /bin/dash ?
+- Previously, both of them were same because /bin/sh was redirecting using the linking concept to /bin/bash but now it is not the same because some of the operating systems have decided to use dash as default.So, your script might not execute if you are writing in bash scripting on a machine where dash is default.
+- We will use the same first line ( #!/bin/bash )
+
+Insert Mode - escape + i
+Saving file - escape then colon wq!, 
+              escape : wq!
+Command - escape then q exclamation
+          escape : q!
+          Only for quitting the file, it will not save the file
+
+Command - cat, used for printing the contents of the file
+        - cat filename
+
+For executing file script -    sh space filename
+                          or
+                          -    ./filename
+
+Note: "./" can be used to execute any type of file, can be python script also.Basically when you have an executable shell file. Any executable file in linux can be executed using "./"
+
+
+**
+- "sh space filename" is executable without any error
+- "./" will throw an error.Basically, what happens is linux wants to understand who can execute this file as main purpose of linux is security. So, it may basically ask who are you or do
+you have permissions. Allows only if the file have permissions, so whenever a file created permissions need to be granted for the file.
+- Granting permissions in linux is not straight forward as linux will not support graphical user interface.
+- "chmod" command is used for granting permissions.
+
+Command for granting permissions to a file - "chmod", but we have to mention what permissions need to be given also.
+                                           - Requires three conditions - what are the permissions for a root user / administrator user, which group has access to a file / what are the permissions for the group ?, what are our permissions ?
+                                           - Basically administrator, group and we should have access to the file.
+
+
+Command - "chmod 777 filename" for granting permissions, then ./filename 
+        - After these 2 commands, file will be executed.
+
+
+Explanation of "chmod 777" - Basically, linux used a formula 4, 2, 1.
+                           - "4" stands for read, "2" stands for write and "1" stands for execute.
+                           
+
+**
+In order to know what commands we used upto now, use command "history".
+
+Command - "history"
+
+List of commands:
+
+1) "touch" - used for creating the file. Mostly used in automations.
+2) "vim" - creating and opening the file.
+3) "cat" - used when we don't want to open the file, but only for reading the contents of the file. That is for printing the contents of the file.
+4) "ls" - to list all the files or all the folders in the directory.
+5) "chmod" - for granting permissions.
+6) "man command" - for knowing details about specific command.
+7) for writing in the file - after creating and opening the file through "vim" command. 
+                           - should go to insert mode.For that do " escape press i ".
+                           - once writing is done, " : wq!" can be used for saving the file.
+                           - " : q!" for quitting the file.
+8) "pwd" - for listing the current working directory or present working directory.
+9) "mkdir" - used for making folders. mkdir stands for making directory.
+10) "ls -ltr" - lists all current files and folders with time stamps.
+11) "cd" - used for changing the directory.
+         - " cd name_of_file_to_which_we_want_to_go "
+12) "cd . ." - Going back to old directory
+13) "rm -rf" - for deleting the folder
+14) 
+
+
+What is the purpose of shell scripting in devops ?
+
+-  Devops engineers activities include infrastructure maintenance, code maintenance with help of git repository and configuration management.
+-  All these require the help of shell scripting on a day-to-day basis.
+-  Though ansible is present, there's need of shell scripts for automation of cron jobs or for switching into the folders where ansible scripts are avaible.
+-  For directly executing, directly logging into the machine.
+-  Instead of logging into every machine, with simple shell script we can log into that particular machine and check for every thing that is CPU, Node health.Can see which processes are going slow, which files are running, how many files are running.
+- 
+
+**
+Node health monitoring includes CPU/RAM monitoring. 
+- For CPU monitoring, there's a command called "nproc".
+- "nproc" will list the CPU's on our machine.
+- To understand what is the memory,that is present on our laptop we can use the "free" command.Through this command, we can identify what is the free memory, total memory and used memory.
+- Instead of using these commands, we can use a specific command called "top". With help of this command, we can identify what are the processes that are running on our machine. Can know which process is taking more memory ?, which process is taking less memory ? also tells which process is using how much amount of memory ? which process is running with process id ? and so on
+- How do we monitor the node health ?, we can simply say we can use "top" command or we can write the custom shell scripts.
+
+
+
+Shell Scripting - Part 2
+
+Command - "df", It will print all the information about the available storage space or the available disk space on this particular virtual machine
+Command - "free", It will print the memory of the machine 
+Command - "nproc", It will give the CPU of the current machine
+
+The above commands "df", "free", "nproc", "top" will help to analyze the node health.
+
+1) "df -h" - Used for printing the disk space
+2) "free -g" - Used for printing the memory
+3) "nproc" - for analyzing the number of cpu's that is resources
+
+**
+
+All the required metadata information need to be provided before writing a script:
+
+1) Author
+2) Date
+3) Output of the script
+4) Version
+
+To understand in a better way, we need proper commenting and usage of good commands:
+
+Option1: Use of echo statements will help us in a better way.
+- These statements help to tell the user what is the output, if we print before each and every command.
+- Sometimes, these echo statements are not helpful if we have thousands of commands.
+
+Better Version:
+
+- Use command "set -x" before beginning of the shell script that is before you start writing your shell script.
+- We have to use the set parameter to set this shell script in the debug mode.
+- minus x, -x stands for debug mode.
+- If we run by giving "set -x" parameter in the beginning of the script,it will help us to give the commands before every output.
+  Eg: +df -h
+      output
+- Here echo statements basically print whatever we are typing, but "set -x" will show you the command that it is executing and it will also print the output.
+- Combination of both helps a lot.
+
+Note: In some cases, we don't want the user to know the commands, in such cases we can comment the command.
+
+How to know all the processes running in the virtual machine ?
+
+- "ps -ef" command, here ps stands for processes and hyphen e basically provides the entire details of the process.
+- That is it provides the details of the processes in a full format and helps in figuring out all the processes. 
+- We can also use the "ps" command, but it does not give you the full processes.
+
+But how to know the processid of that process ?
+
+- "ps -ef | grep name_of_the_process", this command helps to give the processid.
+Eg: ps -ef | grep "amazon"
+
+** processid is required to kill the process, trip dump the process and heap dump the process. With processid, it becomes easy.
+
+Command Explanation:
+
+- "ps -ef" is printing all the information about the processes, that are running on this virtual machine.
+- Out of all the output that is generated, it only fetches the information that is required.
+- pipe parameter (|) sends the output of the first command to the second command.
+
+Interview Question:
+
+UA:~$ date
+output: Thu Dec1 ....
+
+UA:~$ date | echo "today is"
+output: today is
+
+So, here if we observe there's a difference in output. Though pipeline character is present, output didn't change, performed on echo statement only.
+
+- Here, date is a default command. So, date output ( Thu Dec1 ....) will be sent to stdin instead to pipe command.
+- So, pipe will not be able to retrieve the output if it sent to stdin.
+- It will only be able to fetch the details if first command wants to give the output to second command or want to pass the output to pipe instead of channels in the system (stdin, stdout ...)
+
+
+How to get only particular information that is any particular information from the particular process id's ?
+
+- command "awk" will help us to filter out the information from your "output".
+
+Difference between grep and awk commands ?
+
+- grep command directly give you the entire statements or the intent sentences.
+- awk command is very powerful that it gives the specific columns from the output.
+- How to use, just search in youtube ?
+
+
+Purpose of set -e and set -o pipeline ?
+
+- > set -e is used for exiting the script when there is an error.
+- > There will be no use of the script when there is no error correction at the right time.
+- > If we use this command before beginning of the script, it will help to know in the first stage of error itself.
+
+
+Drawback or exception of set -e ?
+
+- > It will not error out, when there is a pipeline ( | ).
+- > In order to overcome that, we need to use "set -o pipeline" for correcting pipefail.
+- > This "set -e" checks the authenticity of the last statement only, if there's a wrong statemnt and pipeline before that it will execute, will not recognize.
+    abhadfhhgsv | echo
+- > It will execute without throwing an error.
+- > In order to detect that, "set -o pipeline" need to be used.
+- > If we use all three, it will benefit us where set -o is used in capturing pipe failure.
+
+Combine command : set -exo pipefail, but it's not recommended
+
+
+What's one of the major use cases of devops engineers ?
+
+- Let's say there are 100 applications that are running and if one of the application is failing,the first thing that comes to our mind is to look into the log file.
+- In order to succeed in finding errors, go into the log file and find errors in the log file.
+ 
+** Different log levels are trace level logging, info level logging, error level logging.
+- So in order to find any error, print the log file using "cat" command and with help of "grep" command find the error.
+- Command: "cat logfile | grep error"A
+- As there will be more error log files, appending them will be difficult. So, they will be stored or uploaded to google or amazon storage so on...That is they will be stored in some external storage devices and will not be present in our working virtual machine.
+- That information will be retrieved using curl command.
+- By using the "curl" command and url of the log file, data can be retrieved.
+- "curl log_file_location" helps to retrieve the information from the internet/from place where log file is stored.
+
+
+Imp:
+- developers try to reach the service uisng endpoints.
+- Tool "Postman" basically helps you to create a API request, similarly if we need to do in shell scripting we use "curl" command which is something similar to request modules in python.
+- So the command will be "curl logfile_location | grep ERROR"
+- If you want to make a get request from google.com or if you want to make a get request to any of your applications, you can also do that using curl command.
+- Command "curl -X GET api.application" that is "curl -X GET api.food.com"
+- "curl" command can be used to download anything from the internet.
+
+wget command:
+- "wget" command is similar to "curl" command.
+- It's basically a download command, so it downlaods and we need to use grep command on the downloaded file.
+- But "curl" command directly gets the information.
+- "curl" uses only one single command but "wget" uses two different commands.
+- If we don't wnat to save the output and store it to a file in your local disk, you can directly use the curl command.
+- But if we want to store this information also into our file, we can use wget command.
+
+find command:
+- "find" command will help in finding the files when we have thousands of files, finds using the location that we give.
+- find slash means "find /" that is find everything ( includes files and folders everything in this virtual machine).
+
+
+How to go to root user ?
+- sudo su -
+
+- We can find our entire file system, different files and folders, we can find out any file that is required.
+
+If, ifelse, for loops - See
+
+trap command:
+
+- trap is basically used for trapping signals, it's rarely used may be 1 out of 100.
+- it's a tricky command.
+
+What are signals ?
+
+- Whatever the action you are performing, you are performing your keyboard or using some commands.
+- "kill" command is basically used to kill a process.
+- "kill -9 java" or "kill -9 processid" , these are the commands used to kill the process.
+- In above command "-9" instructs the linux compiler or the linux kernel to say ok kill this specific process with this process id.
+- What happens in back side is, when you are executing this command there is a signal that is passed to the linux saying that ok this person is asking you to kill a specific file, so this is a signal.
+- Or let's say there is a script that is getting executed.
+- What we usually do for terminating the script is ctrl c, but no one wants to terminate the script.
+- So, with help of this trap command, we can control the use of ctrl c.
+- This traps the signals and performs the execution on our behalf.
+- Command : trap "what action we want to happen" "what signal we need to trap"
+- Command : trap "echo don't use the ctrl+c" "SIGINT^C"
+-    
+
+
+
+
+  
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+

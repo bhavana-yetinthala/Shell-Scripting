@@ -1,0 +1,210 @@
+Day-7, Write a script to report the usage of AWS in your project.
+
+Why would somebody move to cloud infrastructure? Whether it's AWS, Azure, or GCP, what is one of the primary reasons for any organization to move to the cloud??
+
+- There are two things basically, first one is manageability. So let's say you have a startup, or yours is a startup, and you want to maintain your own servers. But the main problem here is that there is a lot of overhead maintenance: you have to create your own data center, manage your own servers, and patch them whenever there is a security issue (constantly upgrade those servers).
+So the problem here is that you should have a systems engineering team or a dedicated team that completely takes care of these servers and systems.
+The second problem is cost. All of these providers work on a simple basis: pay as you go.
+So the concept here is that when you move to the cloud, if you are not using certain instances, you will not be billed for that, whereas if you are buying your physical infrastructure for your company, whether you use it or not, you already have it in your data center, so you have to pay.
+
+Above are the reasons why, in order to reduce maintenance overhead and be cost-effective, organizations move to the cloud.
+
+
+To be cost-effective, what does an organization have to do?
+
+Let's say you are working for "example.com," and "example.com" has 100 developers. You give access to all of these 100 developers to your AWS platform, and everyone starts to create their own resources.
+But to be cost-effective, you need to have your own ways to see if everybody is using the AWS resources up to the point or not.
+Let's say there is a developer named "X." This developer has created 100 EC2 instances and nobody is using them, or the developer created EBS (which happens most of the time; EBS volumes will be created but end up not being used by EC2 instances). So the volumes are left unused.
+Because you are not using it, AWS will not understand that, and it will do billing based on the things it provides you.
+Now, as a devops engineer, AWS admin, or whoever, one of your primary responsibilities is to maintain cost effectiveness (as it's one of the main reasons why your organization moved to the cloud)). So, that's why you always have to track resource usage.
+Tracking the resource usage can be done in multiple ways (shell scripting is not only the optimal way; people use lambda functions and write Python scripts to do the same thing and can write in one's convenient way (AWS SDK, any language).
+
+
+Let's say there is an organization called example.com that is only using resources like EC2, S3, Lambda, and IAM.
+
+
+What is your goal?
+
+Every day, let's say at 6 p.m. or at a certain time, you have to give this report to your manager.
+
+What do people usually do?
+
+Using a shell script or Python, what they would usually do is supply this information to a reporting dashboard.
+For shell scripting knowledge purposes today, let's say it's being done just for the purpose of your manager instead of sending information to the reporting dashboard.
+
+How are you giving this information?
+
+Let's say that you are writing a shell script. Using this shell script, what you do is create a file, and this file will have all of this resource usage: how many EC2 instances are active, how many S3 buckets are there, how many lambda functions are there, and how many IAM users are there ?. You will try to put all of this information into a file.
+
+Imp Note:
+As mentioned before, this report needs to be generated every day.One way of doing it is to run your shell script every day, but what is the problem here? Let's say you are not available at that point in time, or for some reason you are not able to login to that instance, and you cannot share that report at 6 p.m. So, you will miss the timeline.
+Instead, a common practice in every organization is that this shell script can be integrated with a cron job.
+
+What is a cron job?
+A simple example is that an everyday video is scheduled at 7 p.m. Most of the time, the video will be uploaded before that time (before 7 p.m.), but there will be a mention on YouTube to publish the video at 7 p.m..
+So YouTube, on behalf of that person, will publish the video at 7 p.m., so a person is not required to login at 7 p.m. and publish the video.
+In the same way, if you create a cron job, what happens is that one of your Linux processes will wait for 7 p.m., and once the time is set to 7 p.m. It automatically executes the shell script for you.
+This is the concept of cron jobs.
+
+Interview Question:
+
+How can you make sure that a certain script is running every day at X or Y timestamps?
+You can simply say that I can make use of the cron job in Linux, and using the cron job, I can execute this script every day at a given point in time.
+
+** At the end of the day, we are going to write a shell script, and we are going to integrate this shell script with a cron job. But how do we get all of this information?
+
+There are multiple ways of doing it, either through AWS CLI or Boto3 Python. But because we are familiar with shell script and aws cli a bit,.
+By using both, the required output will be obtained.
+
+
+Terminal:
+
+Prerequisites: You need to have your AWS CLI pre-installed.
+
+Below are the steps:
+
+Configure AWS cli and connect to the Ec2 instance.
+First, create an instance in the AWS console, then configure AWS with an access key and a secret access key in the git bash.
+Next, connect to the EC2 instance with the command "ssh -i key_value_pair_location ubuntu@ec2_instance_publicip_address" in gitbash. That is "ssh -i /c/Users/yetin/Downloads/shell_ec2.pem ubuntu@34.203.234.130".
+Then you will be established with an EC2 instance.
+Now the path changes to ubuntu@ip-172-31-18-243:~$
+Use bash as scripting, as it is widely used; configure aws in this step if you haven't already done that.
+
+Open the file with the command "vim aws_resource_tracker.sh."
+Go to insert mode with the command "Press escape, then press the letter i."
+Start with "#!/bin/bash."
+Always start writing about the script; that is, give a description and give comments.
+Provide the below details:
+   a) Author
+b) Date: when did you start writing the script?
+   c) Version
+   d) Description
+In the comments, mention the resources that you are going to track.
+Before every command, give comments, which will be easy to understand for users.
+For AWS cli commands, go to Google and type AWS cli reference; you will get good documentation. Search for whatever you want (you will get the page as an AWS CLI command reference) and go home.
+-> For S3, search for S3, go to examples (you will find the commands and how to use them), and here the number of buckets is listed.
+Next, list EC2 instances, then go to describe instances.
+Next list: aws lambda functions go to list functions
+Next, list IAM users; go to list users.
+Save the file using "wq!" Press escape before giving the command.
+
+Run the code one time. Initial code:
+
+Here, you will go to normal mode.
+
+Note: using "chmod 777" is not a good practice; it's ok to use for practice purposes as it's not being published.
+
+-> Give the permissions with chmod 777 filename, chmod 777 aws_resource_tracker.sh
+Run the file using./filename,./aws_resource_tracker.sh.
+You will observe the output; go to file mode for a better view.
+Use./aws_resource_tracker.sh more to see in a better way.
+-> for better understanding, give echo statements, that is, print statements, being done for user experience.
+In organizations, seniors use the set -x and set -e commands before starting the script; these are used to put the script into debug mode.
+
+Below is the output:
+
+ubuntu@ip-172-31-18-243:~$ ./p.sh | more
+++ echo 'Print list of S3 BUckets'
+++ aws s3 ls
+Print list of S3 BUckets
+2024-03-18 22:26:01 shellec2bucket
+++ echo 'Print list of ec2 instances'
+++ aws ec2 describe-instances
+Print list of ec2 instances
+{
+    "Reservations": [
+        {
+            "Groups": [],
+            "Instances": [
+                {
+                    "AmiLaunchIndex": 0,
+                    "ImageId": "ami-080e1f13689e07408",
+                    "InstanceId": "i-0cced32aa4417d027",
+                    "InstanceType": "t2.micro",
+                    "KeyName": "shell_ec2",
+                    "LaunchTime": "2024-03-18T20:43:19.000Z",
+                    "Monitoring": {
+                        "State": "disabled"
+                    },
+                    "Placement": {
+                        "AvailabilityZone": "us-east-1d",
+                        "GroupName": "",
+                        "Tenancy": "default"
+                    },
+                    "PrivateDnsName": "ip-172-31-18-243.ec2.internal",
+                    "PrivateIpAddress": "172.31.18.243",
+                    "ProductCodes": [],
+                    "PublicDnsName": "ec2-34-203-234-130.compute-1.amazonaws.com",
+--More--++ echo 'Print list of lambda functions'
+++ aws lambda list-functions
+++ echo 'Print list of IAM Users'
+++ aws iam list-users
+
+-> How to find any particular field values, for eg: instanceid of ec2 instance ?
+
+Command "jq" can be used, which is a JSON parser; it will get the information from JSON.
+Command "yq" is also used, which is the yaml parser; it will get the information from yaml.
+Use aws ec2 describe-instances | jq '. Reservations[].Instances[]. InstanceId'. Below is the output:
+
+"i-0cced32aa4417d027"
+
+Now use the command in the.sh file instead of aws ec2 describe-instances; you will only get instanceids instead of the entire output.
+
+How do I put the information into a file?
+
+Redirect the output to a file.
+- just give near every output (for example, aws s3 ls > p1).
+
+Explanation:
+
+What happens is that whenever you are running any script, it will show you the commands it is running (for example, aws s3 ls). It helps to get all the information: what command it is running, what the output is, and so on.
+
+Below is the code used:
+
+# Author : Bhavana Yetinthala
+# Date : March 18,2024
+# Version : V1
+# Description : This script will report the AWS Usage
+#############
+
+set -x
+
+# AWS EC2
+# AWS IAM Users
+# AWS Lambda
+# AWS S3
+
+
+# List S3 Buckets
+
+echo "Print list of S3 BUckets"
+aws s3 ls > p1
+
+# List Ec2 Instances
+
+echo "Print list of ec2 instances"
+aws ec2 describe-instances | jq '.Reservations[].Instances[].InstanceId' > p1
+
+# List lambda functions
+
+echo "Print list of lambda functions"
+aws lambda list-functions > p1
+
+# List IAM Users
+
+echo "Print list of IAM Users"
+aws iam list-users > p1
+
+Challenges:
+I was not able to execute the file; I got errors while executing commands. I got to know that it happened due to not installing AWS cli. I installed AWS cli using bash sudo commands, checked the version, and configured AWS.
+corrected errors while giving commands.
+issues with dependencies.
+
+Task:
+
+Write the same script and integrate it with the cron tab.
+
+
+
+
+

@@ -1,0 +1,51 @@
+Let's say you are one of the devops engineers, and you are maintaining a repository. That means you are creating users and monitoring the github repository (if there are any vulnerabilities in the repo or if you are creating CI/CD pipelines on the repo, basically you own this repository).
+If someone asks you, "He/she doesn't have access to the settings tab, and if he/she may want to see who is on the list of people who have access to this repository," Then what would you do? You would simply go to the settings tab and go to collaborators, and you will find a list of people, and you will probably send them a screenshot.
+But, as a devops engineer, you want to understand this on a daily basis, or, let's say, someone is resigning from your organization, and you want to see if this person has access to this repo. If the person has, you have to revoke their access.
+On a daily basis, you may need to go to the repo if someone needs to read, write, or promote some action. Instead of logging every time to the repository, you can write a shell script.
+This shell script requires GitHub integration.
+
+Github Integration: See the video
+
+- API means application interface, that is instead of manually going to an application ( user interface ), you will talk programmatically. 
+- you can use shell script, python or any langugae to perform this.
+- Basically, you will run some modules for eg: for shell scripting you have "curl" command, for python you have "requests" module.
+- with these modules, you will use the http protocol or now a days people are using "grpc" protocol ( advanced version of http protocol ).
+- Using these modules, you will directly talk to the application.
+- No need to go for any browser, you can either use postman or curl command or requests module.
+- So if you are getting information in this way, you are talking to the application programmatically through the application interface.
+
+Should devops engineers write these API's ?
+
+- As a devops engineer, you don't write the API's but you use the API's or consume the API's. Simple example is boto3.
+- When you want to talk to the AWS, you can either talk through AWS CLI or you can use boto3 module in python and interact with AWS.
+- So github, gitlab, jira, jenkins all have their own API's written by the developers and you can go the documentation, as there will be API reference for every API ( Without reference, Devops engineers cannot understand API's)
+- Devops enginners knew regarding curl, requests module but they don't know what is the url for API ?, and in the url how to get the particular information ?
+
+For Eg: In any repository, in user interface if we want to know pull requests, we can simply click on the pull requests button. But for API, how will you understand that ?. That is any programming language script, how would you understand that what should be the API Url that you should hit ?
+
+- If you want to find the pull request, what you would do is you will go to the Github API documentation, you will search for pull requests, where the github API documentation will tell you "In shell scripting, try to hit this particular url, and you will get the list of pull requests."
+
+Procedure:
+
+Go to google -> Search for Github API Doc -> you will get Github API Rest documentation that is using HTTP Protocol, how should you access the Github API's ? -> In left side, you will have bunch of things -> For Eg: search for pull requests -> then you can see the API url after "GET" -> you will have examples also, for eg: shell scripting, you will have particular command "curl".
+
+- why you need to use "curl" command in shell scripting ?, because in shell scripting "curl" is a module to interact with API's; if you are using python, requests module.
+- There will be a "url" to hit, https.api.github.com
+- API Github documentation url is "github.com", but API url is "https://api.github.com/repos/REPOS/owner/REPO/pulls" -> here you have to replace owner and repo with repo details.
+- If your repository is kubernetes, then here you have to provide kubernetes/kubernetes instead of owner/REPO
+- If your repository is something of your own, then you have to provide your organization name.
+
+Tasks that will be performed:
+
+- As a devops engineer, you will maintain a lot of github repositories, can be bitbucket, gitlab anything that is As a devops engineer, you support multiple teams, let's say each team works on a micro-service and for each team you will create a github repository.
+- For each repository, you will make sure proper access is granted.That is access will be granted, who require access.
+- Next, you make sure that you will write the CI/CD pipelines and whatever is required.
+
+Practicals:
+
+- As a devops engineer, how can you list people who have access to the repository ?, This is important, if someone is resigning the organization you need to check if this person has access to the repository in order to revoke the access, if he have.
+- Everytime instead of going to repository and check in collaborators, you can list the group of users who have access to the repository, then you can revoke the access either through shell scripting or manually, automation is done with shell scripting.
+- 
+
+
+
